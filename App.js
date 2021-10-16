@@ -30,7 +30,7 @@ export default function App() {
       })
     })
     
-    return await appsParaColocar
+    return appsParaColocar
   }
 
   useEffect(() => {
@@ -41,11 +41,17 @@ export default function App() {
   }, [])
 
   const Container = styled(SafeAreaView)`
-    flex: 1;
-    background-color: #ffffff;
+    height: 100%;
+    padding: 0;
+    margin: 0;
     align-items: center;
-    justify-content: center;
-    padding-bottom: 25%;
+    ${() => {
+      if (appsLoading) {
+        return 'padding-bottom: 10%;'
+      } else {
+        return 'padding-bottom: 40%;'
+      }
+    }}
   `
 
   const LoadingIcon = styled(Lottie)`
@@ -54,7 +60,7 @@ export default function App() {
     margin-top: 50%;
   `
 
-  function CardApp({ children='', check=true, host='' }) {
+  function CardApp({ children='', host='' }) {
     const [build, setBuild] = useState()
     const [loadingBuild, setLoadingBuild] = useState(false)
     async function BuildsGet(app) {
@@ -69,9 +75,9 @@ export default function App() {
         })
       )
       const pending = !(await pendingsBrutos).includes('pending') ? true : false
-      
-      setBuild(pending)
+
       setLoadingBuild(true)
+      setBuild(pending)
     }
 
     useEffect(() => {
@@ -109,15 +115,14 @@ export default function App() {
       flex-direction: row;
       align-items: center;
       margin-top: 7%;
-      ${() => !loadingBuild &&'margin-bottom: 18%;'};
     `
 
-    const IconCheck = styled(Svg)`
-      width: 40px;
-      height: 40px;
+    const IconCheck = styled(Lottie)`
+      width: 50px;
+      height: 50px;
     `
 
-    const IconBuild = styled(Svg)`
+    const IconBuild = styled(Lottie)`
       width: 40px;
       height: 40px;
     `
@@ -147,39 +152,43 @@ export default function App() {
     `
 
     const LoadingIconCard = styled(Lottie)`
-      width: 80px;
-      height: 80px;
-      padding-left: 20%;
+      width: 67.5px;
+      height: 67.5px;
+      padding-left: 27%;
     `
-
+    
     return (
       <Card>
         <Header>
           {host==='heroku' && <LogoHeroku source={require('./assets/heroku.png')}/>}
           <Title>{children}</Title>
         </Header>
-        <Infos>
           {loadingBuild && (
-            <>
-              {build ? <>
-                <IconCheck xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="#29A678"><Rect fill="none" height="24" width="24"/><Path d="M22,5.18L10.59,16.6l-4.24-4.24l1.41-1.41l2.83,2.83l10-10L22,5.18z M19.79,10.22C19.92,10.79,20,11.39,20,12 c0,4.42-3.58,8-8,8s-8-3.58-8-8c0-4.42,3.58-8,8-8c1.58,0,3.04,0.46,4.28,1.25l1.44-1.44C16.1,2.67,14.13,2,12,2C6.48,2,2,6.48,2,12 c0,5.52,4.48,10,10,10s10-4.48,10-10c0-1.19-0.22-2.33-0.6-3.39L19.79,10.22z"/></IconCheck>
+            <Infos>
+              {!build ? <>
+                <IconCheck autoPlay={true} colorFilters={[
+                  { keypath: 'boltCore', color: '#27BEE8' },
+                  { keypath: 'check-green', color: '#29A678' }
+                ]} loop={false} source={require('./animations/check.json')}/>
                 <SuccessText>Success</SuccessText>
               </> : <>
-                <IconBuild xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#F2AE30"><Path clip-rule="evenodd" d="M0 0h24v24H0z" fill="none"/><Path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></IconBuild>
+                <IconBuild autoPlay={true} colorFilters={[
+                  { keypath: 'circle-green', color: '#29A678' },
+                  { keypath: 'check-green', color: '#29A678' }
+                ]} loop={false} source={require('./animations/build.json')}/>
                 <BuildText>Building</BuildText>
               </>}
-            </>
+            </Infos>
           )}
-          {!loadingBuild && <LoadingIconCard autoPlay={true} source={require('./animations/loadingWhite.json')}/>}
-        </Infos>
+        {!loadingBuild && <LoadingIconCard autoPlay={true} source={require('./animations/loadingWhite.json')}/>}
       </Card>
     )
   }
   
   return (
-    <ScrollView style={{flex: 5, backgroundColor: '#ffffff', padding: 20}}>
+    <ScrollView style={{display: 'flex'}}>
       <Container>
-        {appsLoading && apps.map((app, index) => <CardApp host="heroku" key={index} check={app.build.pending ? false : true}>{app.nome}</CardApp>)}
+        {appsLoading && apps.map((app, index) => <CardApp host="heroku" key={index}>{app.nome}</CardApp>)}
         {!appsLoading && <LoadingIcon autoPlay={true} source={require('./animations/loading.json')}/>}
         <StatusBar style="light"/>
       </Container>
