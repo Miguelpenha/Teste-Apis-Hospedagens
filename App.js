@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text, View, ScrollView, Image, SafeAreaView } from 'react-native'
 import heroku from './apis/heroku'
-import { Svg, Path, Rect } from 'react-native-svg'
 import { StatusBar } from 'expo-status-bar'
 import Lottie from 'lottie-react-native'
 
