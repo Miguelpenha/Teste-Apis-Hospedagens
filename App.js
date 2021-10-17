@@ -77,7 +77,9 @@ export default function App() {
       const pending = !(await pendingsBrutos).includes('pending') ? true : false
 
       setLoadingBuild(true)
-      setBuild(pending)
+      if (app != 'escola-pagamento') {
+        setBuild(pending)
+      }
     }
 
     useEffect(() => {
@@ -122,14 +124,9 @@ export default function App() {
       height: 50px;
     `
 
-    const IconBuild = styled(Lottie)`
-      width: 40px;
-      height: 40px;
-    `
-
-    const BuildText = styled(Text)`
+    const SuccessText = styled(Text)`
       color: #ffffff;
-      background-color: #F2AE30;
+      background-color: #29A678;
       font-size: 19px;
       margin-left: 5%;
       padding-left: 5%;
@@ -139,9 +136,14 @@ export default function App() {
       border-radius: 30px;
     `
 
-    const SuccessText = styled(Text)`
+    const IconBuild = styled(Lottie)`
+      width: 70px;
+      height: 70px;
+    `
+
+    const BuildText = styled(Text)`
       color: #ffffff;
-      background-color: #29A678;
+      background-color: #F2AE30;
       font-size: 19px;
       margin-left: 5%;
       padding-left: 5%;
@@ -166,15 +168,18 @@ export default function App() {
           {loadingBuild && (
             <Infos>
               {!build ? <>
-                <IconCheck autoPlay={true} colorFilters={[
-                  { keypath: 'boltCore', color: '#27BEE8' },
+                <IconCheck autoPlay colorFilters={[
+                  { keypath: 'circle-green', color: '#29A678' },
                   { keypath: 'check-green', color: '#29A678' }
-                ]} loop={false} source={require('./animations/check.json')}/>
+                ]} speed={1.2} loop={false} source={require('./animations/check.json')}/>
                 <SuccessText>Success</SuccessText>
               </> : <>
                 <IconBuild autoPlay={true} colorFilters={[
-                  { keypath: 'circle-green', color: '#29A678' },
-                  { keypath: 'check-green', color: '#29A678' }
+                  { keypath: 'boltCore', color: '#27BEE8' },
+                  { keypath: 'headHole 2', color: '#27BEE8' },
+                  { keypath: 'headHole', color: '#27BEE8' },
+                  { keypath: 'boltCircle', color: '#27BEE8' },
+                  { keypath: 'bg', color: '#27BEE8' }
                 ]} loop={false} source={require('./animations/build.json')}/>
                 <BuildText>Building</BuildText>
               </>}
