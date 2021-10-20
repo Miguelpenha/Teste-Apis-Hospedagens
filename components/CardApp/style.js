@@ -7,7 +7,7 @@ export const Container = styled(View)`
         if (props.host === 'heroku') {
             return '#9D81C3;'
         } else {
-            return ''
+            return '#000000'
         }
     }};
     padding: 7%;
@@ -63,8 +63,10 @@ export const SuccessText = styled(Text)`
 `
 
 export const IconBuild = styled(Lottie)`
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
+    margin-right: 9%;
+    padding-bottom: 20%;
 `
 
 export const BuildText = styled(Text)`
