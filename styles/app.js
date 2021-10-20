@@ -1,17 +1,24 @@
 import styled from 'styled-components'
-import { SafeAreaView } from 'react-native'
+import { View, FlatList, ActivityIndicator } from 'react-native'
 import Lottie from 'lottie-react-native'
 
-export const Container = styled(SafeAreaView)`
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-  padding-bottom: ${props => props.appsLoading ? '10%' : '40%'};
+export const Container = styled(View)`
+  
+`
+
+export const ListApps = styled(FlatList)`
+  
 `
 
 export const LoadingIcon = styled(Lottie)`
-    width: 120px;
-    height: 120px;
-    margin-top: 50%;
+  width: 120px;
+  height: 120px;
+  margin-top: 50%;
+`
+
+export const Loading = styled(ActivityIndicator).attrs({
+  color: '#27BEE8',
+  size: 'small'
+})`
+  margin: 30px 0;
 `

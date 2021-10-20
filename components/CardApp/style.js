@@ -1,9 +1,15 @@
 import styled from 'styled-components'
-import { View, Image, Text } from 'react-native'
+import { View, Image, Text, ActivityIndicator } from 'react-native'
 import Lottie from 'lottie-react-native'
 
 export const Container = styled(View)`
-    background-color: #27BEE8;
+    background-color: ${props => {
+        if (props.host === 'heroku') {
+            return '#9D81C3;'
+        } else {
+            return ''
+        }
+    }};
     padding: 7%;
     border-radius: 20px;
     margin-top: 10%;
@@ -11,6 +17,8 @@ export const Container = styled(View)`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-self: center;
+    ${props => props.ult ? 'margin-bottom: 10%;' : ''};
 `
 
 export const Header = styled(View)`
@@ -51,6 +59,7 @@ export const SuccessText = styled(Text)`
     padding-top: 3.5%;
     padding-bottom: 3.5%;
     border-radius: 30px;
+    font-weight: bold;
 `
 
 export const IconBuild = styled(Lottie)`
@@ -68,10 +77,12 @@ export const BuildText = styled(Text)`
     padding-top: 3.5%;
     padding-bottom: 3.5%;
     border-radius: 30px;
+    font-weight: bold;
 `
 
-export const LoadingIconCard = styled(Lottie)`
-    width: 67.5px;
-    height: 67.5px;
-    padding-left: 27%;
+export const Loading = styled(ActivityIndicator).attrs({
+    color: '#ffffff',
+    size: 'small'
+  })`
+    margin: 30px 0;
 `

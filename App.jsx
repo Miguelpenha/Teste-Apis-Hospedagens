@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, LoadingIcon } from './styles/app'
-import { ScrollView } from 'react-native'
+import { Container, ListApps, Loading } from './styles/app'
 import heroku from './apis/heroku'
 import { StatusBar } from 'expo-status-bar'
 import CardApp from './components/CardApp'
@@ -13,7 +12,6 @@ export default function App() {
       pending: false
     }
   }])
-  const [appsLoading, setAppsLoading] = useState(false)
   async function appsGet() {
     const appsBrutos = await (await heroku.get('/apps')).data
     let appsParaColocar = []
@@ -35,17 +33,20 @@ export default function App() {
   useEffect(() => {
     appsGet().then(apps => {
       setApps(apps)
-      setAppsLoading(true)
     })
   }, [])
   
   return (
-    <ScrollView style={{display: 'flex'}}>
-      <Container appsLoading={appsLoading}>
-        {appsLoading && apps.map((app, index) => <CardApp key={index} host="heroku" appName={app.nome}/>)}
-        {!appsLoading && <LoadingIcon autoPlay={true} source={require('./animations/loading.json')}/>}
-        <StatusBar style="light"/>
-      </Container>
-    </ScrollView>
+    <Container>
+      <ListApps 
+        data={apps}
+        keyExtractor={app => String(app.id)}
+        renderItem={({ index, item:app }) => (
+          <CardApp key={index} ult={apps.length==index+1 ? true : false} host="heroku" appName={app.nome}/>
+        )}
+      />
+      {apps.length ==0 ? <Loading/> : null}
+      <StatusBar style="light"/>
+    </Container>
   ) 
 }
