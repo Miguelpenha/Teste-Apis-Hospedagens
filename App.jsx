@@ -45,12 +45,12 @@ export default function App() {
     let appsParaColocar = []
 
     appsBrutos.projects.map(projeto => {
-      const build = projeto.latestDeployments.map(deploy => deploy.readyState === 'READY' ? 'false' :  'true')
+      const build = projeto.latestDeployments.map(deploy => deploy.readyState === 'READY' ? 'false' : 'true')
       appsParaColocar.push({
         id: projeto.id,
         nome: projeto.name,
         build: {
-          pending: build.includes('true')
+          pending: Boolean(build.includes('true'))
         },
         host: 'vercel'
       })
@@ -68,17 +68,17 @@ export default function App() {
     })
   }, [])
   let apps = [...appsHeroku, ...appsVercel]
-  console.log(appsVercel)
+  
   return (
     <Container>
-      <ListApps 
+      <ListApps
         data={apps}
-        keyExtractor={app => String(app.id)}
+        keyExtractor={app => app.nome+app.id}
         renderItem={({ index, item:app }) => (
-          <CardApp key={index} ult={apps.length==index+1 ? true : false} host={app.host} appName={app.nome}/>
+          <CardApp buildpd={app.build.pending} ult={apps.length==index+1 ? true : false} host={app.host} appName={app.nome}/>
         )}
       />
-      {appsHeroku.length ==0 ? <Loading/> : null}
+      {appsHeroku.length == 0 && appsVercel.length == 0 ? <Loading/> : null}
       <StatusBar style="light"/>
     </Container>
   ) 
